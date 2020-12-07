@@ -59,11 +59,12 @@ class ImageStack(object):
         self.mono_channel = mono_channel
         self.metadata, self.nd2image = self.get_metadata()
         self.check_nd2_file_form()
-      
+        
     def check_nd2_file_form(self):
-        cond1 = (len(self.metadata['fields_of_view']) == 1) #Only one allowed field of view ; Only one xy position
-        cond2 = (len(self.metadata['frames'] == 1) # Again - no time series
-        assert (cond1 and cond2),"Metadata {0}".format(self.metadata)
+        #cond1 = (len(self.metadata['fields_of_view']) == 1) #Only one allowed field of view ; Only one xy position
+        #cond2 = (len(self.metadata['frames'] == 1) # Again - no time series
+        assert (len(self.metadata['fields_of_view']) == 1),"Metadata {0}".format(self.metadata)
+        assert (len(self.metadata['frames']) == 1), "Metadata {0}".format(self.metadata)
         assert ((len(self.metadata['channels']))>1), "Not enough channels in this image stack"
         return True
     
@@ -80,7 +81,7 @@ class ImageStack(object):
     
     def frames(self):
         return self.metadata['frames']
-   
+    
     def fname(self):
         return(os.path.split(self.bead_nd2_fpath)[1])
 
@@ -236,7 +237,7 @@ class Bead(ImageStack):
     * compile_row: This function integrates the general bead information along with the intensity values
     """
 
-   def __init__(self,bead_nd2_fpath, circle, mask_id, mono_channel=0):
+    def __init__(self,bead_nd2_fpath, circle, mask_id, mono_channel=0):
         super().__init__(bead_nd2_fpath)
         self.circle = list(map(int,circle)) #circle = x,y,r
         self.mono_image = self.nd2image.get_frame(mono_channel)
