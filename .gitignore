@@ -1,5 +1,4 @@
 temp/
-env/
 .log
 .env
 .ipy*
