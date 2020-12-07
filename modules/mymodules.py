@@ -1,3 +1,23 @@
+import os
+
+
+def get_fpaths(top_level_folder, ends_pattern='.nd2'): #Someday will make a generic pattern in mymodule
+    all_fpath = list()
+    for root,dirs,files in os.walk(top_level_folder):
+        for file in files:
+            if file.endswith(ends_pattern): 
+                fpath = os.path.join(root,file) 
+                all_fpath.append(fpath)
+    return all_fpath
+
+
+def make_folder(level_folder):
+    try:
+        os.makedirs(level_folder)
+    except OSError as error:
+        pass
+    return level_folder
+
 def log_progress(sequence, every=None, size=None, name='Items'):
     from ipywidgets import IntProgress, HTML, VBox
     from IPython.display import display
